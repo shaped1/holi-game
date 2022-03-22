@@ -5,7 +5,7 @@ from time import sleep
 message_1 = ["For best results, open the console in full screen","Bytes are the currency this game will be using, similar to dollars or rupees.","Each player will start with 3000 bytes and 20 bags of holi.","When it is your turn, you can take an action."]
 message_2 = ["On your turn, you can ATTACK","If you choose to attack, you will be asked which player you want to throw your bags of holi on.","You can also choose how many bags of holi you want to throw.", "There is a chance you will miss, which is 40%", "You can buy an upgrade in teh shop that increases this."]
 message_3 = ["On your turn, you can DEFEND", "Defending means that there is a high chance that if someone attacks you, they will not succeed", "When you defend, your chance of defending correctly is 70%.", "You can buy an upgrade in the shop that increases this."]
-message_4 = ['Each turn, you will earn a salary of 50 bytes.', 'You can ']
+message_4 = ['Each turn, you will earn a salary of 50 bytes.', 'You can buy an upgrade in the shop that increases your salary.', 'In addition to this, each turn, instead of defending or attacking, you can work.', 'Working earns twice your salary and adds it to your account', "This option is good if you are low on money.", "When you work, your manager/boss is impresses, increasing your salary by 15%"]
 
 def clear():
     if os.name == "nt":
@@ -32,7 +32,7 @@ def starting_message():
                     break
                 print(x)
                 move = input("Your previous input was not a 'c' and was ignored. \nWould you like to continue to the next page? Please enter a 'c' to continue.")
-
+    print("You are now ready to play!")
 class Player:
     def __init__(self) -> None:
         self.name = input("Enter player name: ")
