@@ -123,8 +123,15 @@ def turn(current_game,player):
                     P: Get info about a player (you still have a turn after this)
                     L: Get info about all players (you still have a turn after this.)
                    """)
-
-
+    if option.lower == 'a':
+        clear()
+        print(f'{player.name}, you have chosen to attack.')
+        victim = input("Who would you like to attack? Current players are", current_game.names + ': ')
+        while True:
+            if victim in current_game.players:
+                break
+            victim = input(f"That's not a player! Current players are {current_game.names}: ")
+        bags = 
 if __name__ == "__main__":
     starting_message()
     new_game = Game()
@@ -132,3 +139,4 @@ if __name__ == "__main__":
     new_game.create_players()
     for x in new_game.players:
         print(x)
+
