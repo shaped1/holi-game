@@ -253,7 +253,17 @@ class Game:
         
         susprint(0.02, f"{player.name}, you have chosen to defend.")
         susprint(0.02, f"The probability of defending successfully for 2 turns is {player.defense_proficiency}%.")
-        susprint()
+        numguess = input(f"To decide your fate, enter a number from 1-100: ")
+        while True:
+            while True:
+                if is_int(numguess):
+                    break
+                numguess = input("Please enter an integer: ")
+            if int(numguess) in range(1,101):
+                break
+            numguess = input("Please enter an integer from 1-100: ")
+        
+        
 
     def turn(self, player: Player):
         # Defense lasts 2 turns long. 
