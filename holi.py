@@ -153,6 +153,10 @@ class Game:
 
     def attack(self, player: Player):
         clear()
+        sleep(0.5)
+        if random.random() > player.accuracy:
+            print("By a stroke of fate, a meteor lands and knocks the bags of holi out of your hand.\nYou cannot attack this turn.\nIncrease the accuracy in the shop.")
+            return;
         susprint(0.02, f'{player.name}, you have chosen to attack.')
         victim = input(
             f"Who would you like to attack? Current players are {self.names}: ")
@@ -283,12 +287,33 @@ class Game:
             sleep(2)
             return
         
-        
+    def shop(self, player: Player):
+        clear()
+        susprint(0.005,f"""
+    {player.name}, welcome to the shop!
+    {player.money} bytes available.
+    750 - D: Increase defense proficiency by 5%. Currently at {player.defense_proficiency}%
+    750 - A: Increase attack accuracy by 5%. Currently at {player.accuracy}%
+    25 - H: Buy bags of holi.
+                 """)
+        o = input("What would you like to buy?: ")
+        o = o.upper
+        options = ['D','A','H']
+        while not o in options:
+            o = input("That is not an option.\nWhat would you like to buy?")
+        if o == 'D':
+            clear()
+            if player.defense_proficiency == 100:
+                print("Your defense proficiency is already 100%.")
+                sleep(1)
+                return
+            player.defense_proficiency +=5
+            print("Defense proficiency increased.")
             
-            
-        
-        
-
+        elif o == 'A':
+            pass
+        elif o == 'H':
+            pass
     def turn(self, player: Player):
         # Defense lasts 2 turns long. 
         no_defense = False
@@ -337,4 +362,6 @@ if __name__ == "__main__":
     new_game.create_players()
     for y in range(5):
         for x in new_game.players:
+            print(x)
+            print("")
             new_game.turn(x)
