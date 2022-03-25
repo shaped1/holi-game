@@ -13,7 +13,7 @@ def is_int(num):
         return False
 
 
-def susprint(numtime, text):
+def susprint(numtime:float, text:str):
     for l in text:
         print(l, end='')
         sys.stdout.flush()
@@ -81,6 +81,10 @@ class Player:
         self.accuracy = 60
         # Defense accuracy
         self.defense_proficiency = 70
+        # self.defendedlast is used in maintaining 2 turn defense.
+        self.defendedlast = False
+        # justdefend is to make sure consecutive defenses are not set up. 
+        self.justdefend = False
         self.gender = "none set at the moment"
         self.bags_of_color = 20
         self.salary = 50
@@ -235,25 +239,57 @@ class Game:
                 problem_missed = True
             answer = -1
 
-    def defend(self, player: Player):
+    def defend(self, player: Player) -> None:
+        clear()
+        sleep(0.3)
+        if player.defend:
+            susprint(0.015, f"{player.name}, you already have a defense up!")
+            sleep(3)
+            return;
+        elif player.justdefend:
+            susprint(0.015,f"{player.name}, you just defended!")
+            sleep(3)
+            return;
+        
+        susprint(0.02, f"{player.name}, you have chosen to defend.")
+        susprint(0.02, f"The probability of defending successfully for 2 turns is {player.defense_proficiency}%.")
+        susprint()
 
     def turn(self, player: Player):
+        # Defense lasts 2 turns long. 
+        no_defense = False
+        if player.justdefend:
+            no_defense = True
+            player.justdefend = False
+        if player.defend and player.defendedlast:
+            player.defend = False
+            player.defendedlast = False
+            player.justdefend = True
+        elif player.defend and not player.defendedlast:
+            player.defendedlast = True
         player.money += player.salary
         clear()
-        option = input(f"""
-                        {player.name}, it is your turn. 
-                        What would you like to do?
-                        Please respond with the letter or the word.
-                        A: Attack ({player.bags_of_color} bags of color and {player.accuracy})
-                        D: Defend ({player.defense_proficiency}%)
-                        W: Work (earn money)
-                        S: Shop (buy upgrades and bags of holi)     
-                        The following options do not require a turn.
-                        You can still make a move after this.
-                        I: Get info about how to play the game (you still have a turn after this)
-                        P: Get info about a player (you still have a turn after this)
-                        L: Get info about all players (you still have a turn after this.)
+        susprint(0.005,f"""
+        {player.name}, it is your turn. 
+        What would you like to do?
+        Please respond with the letter or the word.
+        A: Attack ({player.bags_of_color} bags of color and {player.accuracy})
+        D: Defend ({player.defense_proficiency}%)
+        W: Work (earn money)
+        S: Shop (buy upgrades and bags of holi)     
+        The following options do not require a turn.
+        You can still make a move after this.
+        I: Get info about how to play the game (you still have a turn after this)
+        P: Get info about a player (you still have a turn after this)
+        L: Get info about all players (you still have a turn after this.)
                     """)
+        if player.defend:
+            susprint(0.005,"\nYou have a defense set up from last turn.\nTrying to defend will result with the loss of your turn.")
+        elif not player.defend:
+            susprint(0.005, "\nYou do not have a defense set up.")
+        elif no_defense:
+            susprint(0.005, "\nYou cannot defend this turn because you had a defense for the last two turns.")
+        option = input("Please respond with the letter or the word: \n")
         clear()
         sleep(2)
         if option.lower() == 'a':
