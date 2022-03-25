@@ -100,6 +100,7 @@ class Player:
               - Points: {self.points}
               - Attack accuracy: {self.accuracy}
               - Defense accuracy: {self.defense_proficiency}
+              - Color: {self.bags_of_color}
               """
 
 
@@ -198,7 +199,10 @@ class Game:
             vicplayer.color.append(f"{bags} of {color}")
             clear()
             susprint(0.02, f"{bags} of {color} have been thrown.")
-            sleep(0.5)
+            player.bags_of_color-=bags
+            player.points += bags
+            sleep(2)
+            return
 
     def work(self, player: Player):
         clear()
@@ -302,6 +306,10 @@ class Game:
         while not o in options:
             o = input("That is not an option.\nWhat would you like to buy?")
         if o == 'D':
+            if player.money < 750:
+                print("Not enough money")
+                sleep(3)
+                return
             clear()
             if player.defense_proficiency == 100:
                 print("Your defense proficiency is already 100%.")
@@ -309,11 +317,40 @@ class Game:
                 return
             player.defense_proficiency +=5
             print("Defense proficiency increased.")
+            sleep(1)
+            player.money-=750
+            return
             
         elif o == 'A':
-            pass
+            clear()
+            if player.money < 750:
+                print("Not enough money")
+                sleep(3)
+                return
+            if player.accuracy == 100:
+                print("Your accuracy is already 100%.")
+                sleep(1)
+                return
+            player.defense_proficiency +=5
+            print("Accuracy increased.")
+            player.money-=750
+            sleep(1)
+            return
         elif o == 'H':
-            pass
+            clear()
+            print("You have",player.money,"bytes. Each bag costs 25 bytes.")
+            b = input("How many bags do you want to purchase? ")
+            while not is_int(b):
+                b = input("Not an integer. How many bags do you want to purchase? ")
+            if 25*int(b) < player.money:
+                player.bags_of_color += b
+                print("purchased")
+                sleep(1)
+                return
+            print("not enough money")
+            sleep(1)
+            
+            return
     def turn(self, player: Player):
         # Defense lasts 2 turns long. 
         no_defense = False
