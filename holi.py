@@ -253,6 +253,8 @@ class Game:
         
         susprint(0.02, f"{player.name}, you have chosen to defend.")
         susprint(0.02, f"The probability of defending successfully for 2 turns is {player.defense_proficiency}%.")
+        # The following section of code is insignificant.
+        # I could've just made a random guess for the user, but what fun is that??
         numguess = input(f"To decide your fate, enter a number from 1-100: ")
         while True:
             while True:
@@ -262,6 +264,28 @@ class Game:
             if int(numguess) in range(1,101):
                 break
             numguess = input("Please enter an integer from 1-100: ")
+        clear()
+        susprint(0.02,f"Your guess is {numguess}.")
+        for i in range(1,6):
+            susprint(0.003,f"Rolling the dice{'.'*i}")
+        temp = range(1,101)
+        random.shuffle(temp)
+        temp1 = []
+        for i in range(player.defense_proficiency):
+            temp1.append(temp[i])
+        if numguess in temp1:
+            susprint(0.02,"You set up a defense!")
+            sleep(0.5)
+            player.defend = True
+            return
+        else:
+            susprint(0.02, "Your guess did not work. Your defense was not set up.")
+            sleep(2)
+            return
+        
+        
+            
+            
         
         
 
@@ -287,11 +311,6 @@ class Game:
         D: Defend ({player.defense_proficiency}%)
         W: Work (earn money)
         S: Shop (buy upgrades and bags of holi)     
-        The following options do not require a turn.
-        You can still make a move after this.
-        I: Get info about how to play the game (you still have a turn after this)
-        P: Get info about a player (you still have a turn after this)
-        L: Get info about all players (you still have a turn after this.)
                     """)
         if player.defend:
             susprint(0.005,"\nYou have a defense set up from last turn.\nTrying to defend will result with the loss of your turn.")
